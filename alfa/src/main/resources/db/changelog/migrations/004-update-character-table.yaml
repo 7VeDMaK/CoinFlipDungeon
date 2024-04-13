@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 4
+      author: Balai D
+      comment: "Adding is_public column in character table."
+      changes:
+        - addColumn:
+            tableName: characters
+            columns:
+              - column:
+                  name: is_public
+                  type: boolean

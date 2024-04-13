@@ -1,0 +1,280 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="Dessel (generated)" id="1707156456560-1">
+        <createTable tableName="role">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_pkey"/>
+            </column>
+            <column name="role_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-2">
+        <createTable tableName="characteristics">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="characteristics_pkey"/>
+            </column>
+            <column name="characteristic_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="characteristic_description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-3">
+        <createTable tableName="refreshtoken">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="refreshtoken_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER"/>
+            <column name="expiry_date" type="TIMESTAMP WITH TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="token" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-4">
+        <createTable tableName="stats">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="stats_pkey"/>
+            </column>
+            <column name="stat_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stat_description" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-5">
+        <createTable tableName="users">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="is_email_verified" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(75)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(120)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-6">
+        <addUniqueConstraint columnNames="role_type" constraintName="role_role_type_key" tableName="role"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-7">
+        <addUniqueConstraint columnNames="characteristic_name" constraintName="characteristics_characteristic_name_key" tableName="characteristics"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-8">
+        <addUniqueConstraint columnNames="token" constraintName="refreshtoken_token_key" tableName="refreshtoken"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-9">
+        <addUniqueConstraint columnNames="user_id" constraintName="refreshtoken_user_id_key" tableName="refreshtoken"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-10">
+        <addUniqueConstraint columnNames="stat_name" constraintName="stats_stat_name_key" tableName="stats"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-11">
+        <addUniqueConstraint columnNames="email" constraintName="users_email_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-12">
+        <addUniqueConstraint columnNames="username" constraintName="users_username_key" tableName="users"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-13">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="campaigns_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-14">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="character_characteristics_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-15">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="character_stats_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-16">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="characteristics_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-17">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="characters_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-18">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="refreshtoken_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-19">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="role_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-20">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="stats_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-21">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="users_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-22">
+        <createTable tableName="campaign_characters">
+            <column name="campaign_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="campaign_characters_pkey"/>
+            </column>
+            <column name="character_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="campaign_characters_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-23">
+        <createTable tableName="campaigns">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="campaigns_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(5000)"/>
+            <column name="cover_image" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-24">
+        <createTable tableName="character_characteristics">
+            <column name="character_id" type="INTEGER"/>
+            <column name="characteristic_id" type="INTEGER"/>
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="character_characteristics_pkey"/>
+            </column>
+            <column name="value" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-25">
+        <createTable tableName="character_stats">
+            <column name="character_id" type="INTEGER"/>
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="character_stats_pkey"/>
+            </column>
+            <column name="stat_id" type="INTEGER"/>
+            <column name="value" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-26">
+        <createTable tableName="characters">
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="characters_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER"/>
+            <column name="character_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="character_description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-27">
+        <createTable tableName="user_campaigns">
+            <column name="campaign_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_campaigns_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_campaigns_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-28">
+        <createTable tableName="user_roles">
+            <column name="role_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_roles_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="user_roles_pkey"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-29">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="characters" constraintName="fk27yx743bsnnsqplnjhk5yf224" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-30">
+        <addForeignKeyConstraint baseColumnNames="characteristic_id" baseTableName="character_characteristics" constraintName="fk5h9ffiul74s6a3f6oytpds274" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="characteristics" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-31">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="refreshtoken" constraintName="fka652xrdji49m4isx38pp4p80p" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-32">
+        <addForeignKeyConstraint baseColumnNames="campaign_id" baseTableName="user_campaigns" constraintName="fkajlnt7yfsexhbyvnpwki7y8xp" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="campaigns" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-33">
+        <addForeignKeyConstraint baseColumnNames="stat_id" baseTableName="character_stats" constraintName="fkfoxquh1q8p0m81g1jdimvt38b" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="stats" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-34">
+        <addForeignKeyConstraint baseColumnNames="campaign_id" baseTableName="campaign_characters" constraintName="fkgevq70usy5anvl4h18q4f0ju3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="campaigns" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-35">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_roles" constraintName="fkhfh9dx7w3ubf1co1vdev94g3f" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-36">
+        <addForeignKeyConstraint baseColumnNames="character_id" baseTableName="campaign_characters" constraintName="fkiqvvral3x3giqc683ryqddmji" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="characters" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-37">
+        <addForeignKeyConstraint baseColumnNames="character_id" baseTableName="character_characteristics" constraintName="fkj2yxk9s3kksnmsllhjx5k2jya" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="characters" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-38">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_campaigns" constraintName="fkomnev4rl95lt2b3d0bd3ahpmk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-39">
+        <addForeignKeyConstraint baseColumnNames="character_id" baseTableName="character_stats" constraintName="fkopkj60dig5yk7nc9pivjd4i7w" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="characters" validate="true"/>
+    </changeSet>
+    <changeSet author="Dessel (generated)" id="1707156456560-40">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_roles" constraintName="fkrhfovtciq1l558cw6udg0h0d3" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+
+    <changeSet author="darvi (generated)" id="1710166392442-41">
+        <createTable tableName="campaign_secondary_roles">
+            <column name="campaign_users_id" type="INTEGER"/>
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="campaign_secondary_roles_pkey"/>
+            </column>
+            <column name="role_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-42">
+        <addUniqueConstraint columnNames="role_id" constraintName="campaign_secondary_roles_role_id_key" tableName="campaign_secondary_roles"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-43">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="campaign_secondary_roles_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-44">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="50" maxValue="9223372036854775807" minValue="1" sequenceName="campaign_users_seq" startValue="1"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-45">
+        <createTable tableName="campaign_users">
+            <column name="campaign_id" type="INTEGER"/>
+            <column name="campaign_users_roles_id" type="INTEGER"/>
+            <column name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="campaign_users_pkey"/>
+            </column>
+            <column name="user_id" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-46">
+        <addForeignKeyConstraint baseColumnNames="campaign_users_id" baseTableName="campaign_secondary_roles" constraintName="fk3u6irwdmg4t779t05qfo7njhk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="campaign_users" validate="true"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-47">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="campaign_secondary_roles" constraintName="fkgb8qc3gc7uocilotyfm6ka5s7" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-48">
+        <addForeignKeyConstraint baseColumnNames="campaign_id" baseTableName="campaign_users" constraintName="fkhsxkvianqxf5l0fojmx7efu9k" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="campaigns" validate="true"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-49">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="campaign_users" constraintName="fkkbgx37ayi1h4w82xs2w9fk1hc" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="darvi (generated)" id="1710166392442-50">
+        <addForeignKeyConstraint baseColumnNames="campaign_users_roles_id" baseTableName="campaign_users" constraintName="fkqwbelxywarebm6wb7dwq21b6k" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="campaign_secondary_roles" validate="true"/>
+    </changeSet>
+</databaseChangeLog>

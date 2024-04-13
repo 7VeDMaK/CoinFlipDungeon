@@ -1,0 +1,575 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1707156456560-1
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: role_pkey
+              - column:
+                  name: role_type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            constraintName: role_role_type_key
+            tableName: role
+            columnNames: role_type
+  - changeSet:
+      id: 1707156456560-2
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: characteristics
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: characteristics_pkey
+              - column:
+                  name: characteristic_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: characteristic_description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            constraintName: characteristics_characteristic_name_key
+            tableName: characteristics
+            columnNames: characteristic_name
+  - changeSet:
+      id: 1707156456560-3
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: refreshtoken
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: refreshtoken_pkey
+              - column:
+                  name: user_id
+                  type: INTEGER
+              - column:
+                  name: expiry_date
+                  type: TIMESTAMP WITH TIME ZONE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            constraintName: refreshtoken_token_key
+            tableName: refreshtoken
+            columnNames: token
+  - changeSet:
+      id: 1707156456560-4
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: stats
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: stats_pkey
+              - column:
+                  name: stat_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stat_description
+                  type: VARCHAR(255)
+        - addUniqueConstraint:
+            constraintName: stats_stat_name_key
+            tableName: stats
+            columnNames: stat_name
+  - changeSet:
+      id: 1707156456560-5
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: users_pkey
+              - column:
+                  name: is_email_verified
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(75)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: VARCHAR(120)
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            constraintName: users_email_key
+            tableName: users
+            columnNames: email
+        - addUniqueConstraint:
+            constraintName: users_username_key
+            tableName: users
+            columnNames: username
+  - changeSet:
+      id: 1707156456560-6
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: campaigns_seq
+            incrementBy: 50
+            minValue: 1
+            maxValue: 9223372036854775807
+            startValue: 1
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+  - changeSet:
+      id: 1707156456560-7
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: character_characteristics_seq
+            incrementBy: 50
+            minValue: 1
+            maxValue: 9223372036854775807
+            startValue: 1
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+  - changeSet:
+      id: 1707156456560-8
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: character_stats_seq
+            incrementBy: 50
+            minValue: 1
+            maxValue: 9223372036854775807
+            startValue: 1
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+  - changeSet:
+      id: 1707156456560-9
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: characteristics_seq
+            incrementBy: 50
+            minValue: 1
+            maxValue: 9223372036854775807
+            startValue: 1
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+  - changeSet:
+      id: 1707156456560-10
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: characters_seq
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            startValue: 1
+  - changeSet:
+      id: 1707156456560-11
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: refreshtoken_seq
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            startValue: 1
+  - changeSet:
+      id: 1707156456560-12
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: role_seq
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            startValue: 1
+  - changeSet:
+      id: 1707156456560-13
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: stats_seq
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            startValue: 1
+  - changeSet:
+      id: 1707156456560-14
+      author: Dessel (generated)
+      changes:
+        - createSequence:
+            sequenceName: users_seq
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            startValue: 1
+  - changeSet:
+      id: 1707156456560-15
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: campaign_characters
+            columns:
+              - column:
+                  name: campaign_id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: campaign_characters_pkey
+              - column:
+                  name: character_id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: campaign_characters_pkey
+  - changeSet:
+      id: 1707156456560-16
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: campaigns
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: campaigns_pkey
+              - column:
+                  name: name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(5000)
+              - column:
+                  name: cover_image
+                  type: VARCHAR(255)
+  - changeSet:
+      id: 1707156456560-17
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: characters
+            columns:
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: characters_pkey
+              - column:
+                  name: user_id
+                  type: INTEGER
+              - column:
+                  name: character_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: character_description
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 1707156456560-18
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: character_stats
+            columns:
+              - column:
+                  name: character_id
+                  type: INTEGER
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: character_stats_pkey
+              - column:
+                  name: stat_id
+                  type: INTEGER
+              - column:
+                  name: value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: [character_id]
+            baseTableName: character_stats
+            constraintName: fkopkj60dig5yk7nc9pivjd4i7w
+            referencedColumnNames: [id]
+            referencedTableName: characters
+            validate: true
+  - changeSet:
+      id: 1707156456560-19
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: character_characteristics
+            columns:
+              - column:
+                  name: character_id
+                  type: INTEGER
+              - column:
+                  name: characteristic_id
+                  type: INTEGER
+              - column:
+                  name: id
+                  type: INTEGER
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: character_characteristics_pkey
+              - column:
+                  name: value
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: [ character_id ]
+            baseTableName: character_characteristics
+            constraintName: fkj2yxk9s3kksnmsllhjx5k2jya
+            referencedColumnNames: [ id ]
+            referencedTableName: characters
+            validate: true
+  - changeSet:
+      id: 1707156456560-20
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: user_campaigns
+            columns:
+              - column:
+                  name: campaign_id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_campaigns_pkey
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_campaigns_pkey
+  - changeSet:
+      id: 1707156456560-21
+      author: Dessel (generated)
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: role_id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_roles_pkey
+              - column:
+                  name: user_id
+                  type: INTEGER
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    primaryKeyName: user_roles_pkey
+  - changeSet:
+      id: 1707156456560-22
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [user_id]
+            baseTableName: user_roles
+            constraintName: fkhfh9dx7w3ubf1co1vdev94g3f
+            referencedColumnNames: [id]
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 1707156456560-23
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [campaign_id]
+            baseTableName: user_campaigns
+            constraintName: fkajlnt7yfsexhbyvnpwki7y8xp
+            referencedColumnNames: [id]
+            referencedTableName: campaigns
+            validate: true
+  - changeSet:
+      id: 1707156456560-24
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [campaign_id]
+            baseTableName: campaign_characters
+            constraintName: fkgevq70usy5anvl4h18q4f0ju3
+            referencedColumnNames: [id]
+            referencedTableName: campaigns
+            validate: true
+  - changeSet:
+      id: 1707156456560-25
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [user_id]
+            baseTableName: refreshtoken
+            constraintName: fka652xrdji49m4isx38pp4p80p
+            referencedColumnNames: [id]
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 1707156456560-26
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [user_id]
+            baseTableName: characters
+            constraintName: fk27yx743bsnnsqplnjhk5yf224
+            referencedColumnNames: [id]
+            referencedTableName: users
+            validate: true
+  - changeSet:
+      id: 1707156456560-27
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [character_id]
+            baseTableName: character_characteristics
+            constraintName: fk5h9ffiul74s6a3f6oytpds274
+            referencedColumnNames: [id]
+            referencedTableName: characteristics
+            validate: true
+  - changeSet:
+      id: 1707156456560-28
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [character_id]
+            baseTableName: character_stats
+            constraintName: fkfoxquh1q8p0m81g1jdimvt38b
+            referencedColumnNames: [id]
+            referencedTableName: stats
+            validate: true
+  - changeSet:
+      id: 1707156456560-29
+      author: Dessel (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [role_id]
+            baseTableName: user_roles
+            constraintName: fkrhfovtciq1l558cw6udg0h0d3
+            referencedColumnNames: [id]
+            referencedTableName: role
+            validate: true
+  - changeSet:
+      id: 1707156456560-30
+      author: NKMory
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [character_id]
+            baseTableName: campaign_characters
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: 'NO ACTION'
+            onUpdate: 'NO ACTION'
+            constraintName: fkiqvvral3x3giqc683ryqddmji
+            referencedColumnNames: [id]
+            referencedTableName: characters
+            validate: true
+  - changeSet:
+      id: 1707156456560-31
+      author: NKMory
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: [user_id]
+            baseTableName: user_campaigns
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: 'NO ACTION'
+            onUpdate: 'NO ACTION'
+            constraintName: fkomnev4rl95lt2b3d0bd3ahpmk
+            referencedColumnNames: [id]
+            referencedTableName: users
+            validate: true

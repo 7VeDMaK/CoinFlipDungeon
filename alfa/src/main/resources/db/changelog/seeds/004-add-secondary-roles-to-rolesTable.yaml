@@ -1,0 +1,34 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 4
+      author: RandomIsGood
+      comment: "Adding the basic campaign's roles into the roles table"
+      changes:
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  valueComputed: 4
+              - column:
+                  name: role_type
+                  value: "ROLE_PLAYER"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  valueComputed: 5
+              - column:
+                  name: role_type
+                  value: "ROLE_GAME_MASTER"
+        - insert:
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  valueComputed: 6
+              - column:
+                  name: role_type
+                  value: "ROLE_OWNER"

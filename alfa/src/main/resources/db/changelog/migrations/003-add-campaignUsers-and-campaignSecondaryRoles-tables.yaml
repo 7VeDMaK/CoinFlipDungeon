@@ -1,0 +1,162 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1710166392442-41
+      author: Dessel
+      changes:
+        - createTable:
+            tableName: campaign_secondary_roles
+            columns:
+              - column:
+                  name: campaign_users_id
+                  type: INTEGER
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: campaign_secondary_roles_pkey
+              - column:
+                  name: role_id
+                  type: INTEGER
+
+  - changeSet:
+      id: 1710166392442-42
+      author: Dessel
+      changes:
+        - addUniqueConstraint:
+            columnNames: role_id
+            constraintName: campaign_secondary_roles_role_id_key
+            tableName: campaign_secondary_roles
+
+  - changeSet:
+      id: 1710166392442-43
+      author: Dessel
+      changes:
+        - createSequence:
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            sequenceName: campaign_secondary_roles_seq
+            startValue: 1
+
+  - changeSet:
+      id: 1710166392442-44
+      author: Dessel
+      changes:
+        - createSequence:
+            cacheSize: 1
+            cycle: false
+            dataType: bigint
+            incrementBy: 50
+            maxValue: 9223372036854775807
+            minValue: 1
+            sequenceName: campaign_users_seq
+            startValue: 1
+
+  - changeSet:
+      id: 1710166392442-45
+      author: Dessel
+      changes:
+        - createTable:
+            tableName: campaign_users
+            columns:
+              - column:
+                  name: campaign_id
+                  type: INTEGER
+              - column:
+                  name: campaign_users_roles_id
+                  type: INTEGER
+              - column:
+                  name: id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: campaign_users_pkey
+              - column:
+                  name: user_id
+                  type: INTEGER
+
+  - changeSet:
+      id: 1710166392442-46
+      author: Dessel
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: campaign_users_id
+            baseTableName: campaign_secondary_roles
+            constraintName: fk3u6irwdmg4t779t05qfo7njhk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: campaign_users
+            validate: true
+
+  - changeSet:
+      id: 1710166392442-47
+      author: Dessel
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: role_id
+            baseTableName: campaign_secondary_roles
+            constraintName: fkgb8qc3gc7uocilotyfm6ka5s7
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: role
+            validate: true
+
+  - changeSet:
+      id: 1710166392442-48
+      author: Dessel
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: campaign_id
+            baseTableName: campaign_users
+            constraintName: fkhsxkvianqxf5l0fojmx7efu9k
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: campaigns
+            validate: true
+
+  - changeSet:
+      id: 1710166392442-49
+      author: Dessel
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: campaign_users
+            constraintName: fkkbgx37ayi1h4w82xs2w9fk1hc
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: users
+            validate: true
+
+  - changeSet:
+      id: 1710166392442-50
+      author: Dessel
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: campaign_users_roles_id
+            baseTableName: campaign_users
+            constraintName: fkqwbelxywarebm6wb7dwq21b6k
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: campaign_secondary_roles
+            validate: true
