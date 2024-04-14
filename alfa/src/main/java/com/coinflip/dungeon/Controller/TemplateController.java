@@ -12,7 +12,7 @@ public class TemplateController {
     @GetMapping
     String getPeople(Model model){
         model.addAttribute("something", "coming from the controller");
-        return "index";
+        return "registration";
     }
 }
 
