@@ -3,6 +3,7 @@ package com.coinflip.dungeon.Security;
 import com.coinflip.dungeon.Security.JWT.AuthEntryPointJwt;
 import com.coinflip.dungeon.Security.JWT.AuthTokenFilter;
 import com.coinflip.dungeon.Security.Services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.RequestHeaderAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
@@ -55,7 +58,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
@@ -64,6 +67,19 @@ public class WebSecurityConfig {
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        // Добавляем конфигурацию для работы с куками
+//        http.addFilterBefore(new RequestHeaderAuthenticationFilter(), BasicAuthenticationFilter.class)
+//                .logout()
+//                .logoutUrl("/api/auth/logout")
+//                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> httpServletResponse.setStatus(HttpServletResponse.SC_OK))
+//                .deleteCookies("JWT_TOKEN")
+//                .invalidateHttpSession(true)
+//                .clearAuthentication(true)
+//                .and()
+//                .rememberMe()
+//                .rememberMeParameter("remember-me")
+//                .key("uniqueAndSecret");
 
         return http.build();
     }

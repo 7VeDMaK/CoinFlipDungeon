@@ -17,6 +17,7 @@ import com.coinflip.dungeon.Payload.Response.TokenRefreshResponse;
 import com.coinflip.dungeon.Security.JWT.JwtUtils;
 import com.coinflip.dungeon.Security.Services.RefreshTokenService;
 import com.coinflip.dungeon.Security.Services.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -134,7 +135,7 @@ public class ApiAuthController {
 
 
     @PostMapping("/signin")
-    public String authenticateUser(@ModelAttribute LoginRequest loginRequest, Model model) {
+    public String authenticateUser(@ModelAttribute LoginRequest loginRequest, HttpServletResponse response, Model model) {
 
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -148,13 +149,11 @@ public class ApiAuthController {
         List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
         refreshTokenService.deleteByUserId(userDetails.getId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-//        System.out.println(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
-//                userDetails.getUsername(), userDetails.getEmail(), roles));
-        System.out.println(refreshToken);
-        System.out.println("refreshToken");
+        jwtUtils.addJwtTokenToCookie(response, jwt); // Добавляем токен в куки
         model.addAttribute("userLogin", loginRequest);
         return "me";
     }
+
 
 
 //    @PostMapping("/refreshtoken")
