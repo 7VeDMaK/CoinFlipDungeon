@@ -3,7 +3,6 @@ package com.coinflip.dungeon.Security.JWT;
 import com.coinflip.dungeon.Security.Services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -51,24 +50,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    // Добавлен метод для чтения JWT токена из кук
     private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
             return headerAuth.substring(7);
         }
-
         // Попытайтесь получить токен из куки
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("JWT_TOKEN")) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return null;
+        return jwtUtils.getJwtTokenFromRequest(request);
     }
 }

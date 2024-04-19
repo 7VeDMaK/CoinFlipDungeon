@@ -3,6 +3,7 @@
     import com.coinflip.dungeon.Security.Services.UserDetailsImpl;
     import io.jsonwebtoken.*;
     import jakarta.servlet.http.Cookie;
+    import jakarta.servlet.http.HttpServletRequest;
     import jakarta.servlet.http.HttpServletResponse;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
@@ -35,6 +36,20 @@
         public String getUserNameFromJwtToken(String token) {
             return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
         }
+
+        public String getJwtTokenFromRequest(HttpServletRequest request){
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("JWT_TOKEN")) {
+                        return cookie.getValue();
+                    }
+                }
+            }
+            return null;
+        }
+        // TODO ДОДЕЛАТЬ ФУНКЦИЮ ЗАБОРА КУКИ, ТАКЖЕ ПЕРЕМЕСТИТЬ ЕЁ В СЕРВИС КУДА-ТО, ХЗ. КУКИ НУЖНЫ ЧТОБЫ ДОСТАВАТЬ
+        // TODO ТОКЕН, НО ВОЗМОЖНО МОЯ ИДЕЯ ТУПАЯ И НУЖНО ПЕРЕСМОТРЕТЬ КАК ПОЛУЧАТЬ ИНФО О ЮЗЕРЕ
 
         public boolean validateJwtToken(String authToken) {
             try {

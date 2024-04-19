@@ -1,7 +1,6 @@
 package com.coinflip.dungeon.Controller;
 
 import com.coinflip.dungeon.Exceptions.TokenRefreshException;
-import com.coinflip.dungeon.Repository.RefreshTokenRepository;
 import com.coinflip.dungeon.Repository.RoleRepository;
 import com.coinflip.dungeon.Repository.UserRepository;
 import com.coinflip.dungeon.Domain.ERole;
@@ -17,7 +16,6 @@ import com.coinflip.dungeon.Payload.Response.TokenRefreshResponse;
 import com.coinflip.dungeon.Security.JWT.JwtUtils;
 import com.coinflip.dungeon.Security.Services.RefreshTokenService;
 import com.coinflip.dungeon.Security.Services.UserDetailsImpl;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -37,7 +33,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@Controller
+@RestController
 @RequestMapping("/api/auth")
 public class ApiAuthController {
     @Autowired
@@ -53,32 +49,41 @@ public class ApiAuthController {
     RoleRepository roleRepository;
 
     @Autowired
-    RefreshTokenRepository refreshTokenRepository;
-    @Autowired
     PasswordEncoder encoder;
 
     @Autowired
     JwtUtils jwtUtils;
 
-    @GetMapping("/signup")
-    public String getRegisterPage(Model model) {
-        model.addAttribute("signUpRequest", new SignupRequest());
-        System.out.println(model.getAttribute("signUpRequest"));
-        return "register";
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        String jwt = jwtUtils.generateJwtToken(userDetails);
+
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
+        return ResponseEntity.ok(new JwtResponse(jwt, refreshToken.getToken(), userDetails.getId(),
+                userDetails.getUsername(), userDetails.getEmail(), roles));
     }
-// TODO юзать model комментарии
-// TODO создать me
-// TODO как работают cookie
-// TODO если всё ок, то просто возвращаем назад security
+
     @PostMapping("/signup")
-    public String signupUser(@ModelAttribute SignupRequest signUpRequest, Model model) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            model.addAttribute("message", "Username is already taken!");
-            return "error_page";
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
         }
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            model.addAttribute("message", "Email is already in use!");
-            return "error_page";
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
@@ -121,53 +126,22 @@ public class ApiAuthController {
 
         user.setRoles(roles);
         userRepository.save(user);
-        System.out.println(user);
-        model.addAttribute("message", "User registered successfully!");
-        return "redirect:/api/auth/signin";
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
 
-    @GetMapping("/signin")
-    public String getLoginPage(Model model) {
-        model.addAttribute("loginRequest", new LoginRequest());
-        return "login";
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
     }
-
-
-    @PostMapping("/signin")
-    public String authenticateUser(@ModelAttribute LoginRequest loginRequest, HttpServletResponse response, Model model) {
-
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        String jwt = jwtUtils.generateJwtToken(userDetails);
-
-        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        refreshTokenService.deleteByUserId(userDetails.getId());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-        jwtUtils.addJwtTokenToCookie(response, jwt); // Добавляем токен в куки
-        model.addAttribute("userLogin", loginRequest);
-        return "me";
-    }
-
-
-
-//    @PostMapping("/refreshtoken")
-//    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
-//        String requestRefreshToken = request.getRefreshToken();
-//
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration)
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-//                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-//                        "Refresh token is not in database!"));
-//    }
 }

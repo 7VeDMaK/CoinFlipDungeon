@@ -2,27 +2,69 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Добавляем немного отступа сверху, чтобы форма выглядела лучше */
+        body {
+            padding-top: 50px;
+            background-image: url("../static/registerPage.jpg"); /* Замените 'your-image-url.jpg' на путь к вашему изображению */
+            background-size: cover; /* Масштабирование изображения, чтобы оно заполняло весь фон */
+            background-position: center;
+        }
+
+        .btn {
+            width: 100%; /* Сделаем кнопку такой же по ширине, как и форма */
+            text-align: center; /* Центрируем текст внутри кнопки */
+        }
+
+        .card-title {
+            text-align: center;
+        }
+
+        .card-description {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            text-align: center;
+            font-weight: normal;
+        }
+
+    </style>
 </head>
 <body>
-
-<h2>Registration Form</h2>
-
-<form th:action="signup" th:object="${signUpRequest}" method="post">
-    <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username"/>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Registration</h2>
+                    <h6 class="card-description">Welcome to Dungeon Coin Flip! Register, please. It will be an interesting road!</h6>
+                    <form th:action="signup" th:object="${signUpRequest}" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password-confirm" class="form-label">Confirm password</label>
+                            <input type="password" class="form-control" id="password-confirm" name="password-confirm"
+                                   required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email"/>
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password"/>
-    </div>
-    <button type="submit">Register</button>
-</form>
-
+</div>
 </body>
 </html>
+

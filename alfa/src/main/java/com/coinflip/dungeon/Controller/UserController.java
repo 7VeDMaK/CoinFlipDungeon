@@ -1,53 +1,40 @@
 package com.coinflip.dungeon.Controller;
 
-import com.coinflip.dungeon.Repository.UserRepository;
 import com.coinflip.dungeon.Domain.User;
+import com.coinflip.dungeon.Payload.Request.LoginRequest;
+import com.coinflip.dungeon.Payload.Request.SignupRequest;
+import com.coinflip.dungeon.Repository.UserRepository;
 import com.coinflip.dungeon.Security.JWT.JwtUtils;
-import com.coinflip.dungeon.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/users")
+@CrossOrigin(origins = "*", maxAge = 3600)
+@Controller
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private JwtUtils jwtUtils;
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAll() {
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
-    }
-
-    @GetMapping("/getSelfUserInfo")
-    public ResponseEntity<String> getSelfUserInfo(@RequestHeader("Authorization") String token) {
-        if (token.isEmpty()) return ResponseEntity.badRequest().body("User not signed error");
-        //Can't be reached
-        String username = jwtUtils.getUserNameFromJwtToken(token.split(" ")[1].trim());
+    @GetMapping("/me")
+    public String getUserInfo(HttpServletRequest request, Model model) {
+        String token = jwtUtils.getJwtTokenFromRequest(request);
+        if (token.isEmpty()) System.out.println("Bad things");
+        String username = jwtUtils.getUserNameFromJwtToken(token);
         User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        String message = String.format("Username: %s \nE-mail: %s \nCampaigns: %s", username, user.getEmail(), user.getCampaigns());
-        return ResponseEntity.ok(message);
-    }
+//        String message = String.format("Username: %s \nE-mail: %s \nCampaigns: %s", username, user.getEmail(), user.getCampaigns());
+//        model.addAttribute("message", message);
+        model.addAttribute("username", username);
+        model.addAttribute("user_email", user.getEmail());
+        model.addAttribute("user_campaigns", user.getCampaigns());
 
-    @GetMapping("/getAnotherUserInfo")
-    public ResponseEntity<String> getAnotherUserInfo(@RequestHeader("Authorization") String token, @RequestParam String username) {
-        if (token.isEmpty()) return ResponseEntity.badRequest().body("User not signed error");
-        //Can't be reached
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
-        String message = String.format("Username: %s\nCampaigns: %s", username, user.getCampaigns());
-        return ResponseEntity.ok(message);
-        //TODO Should create condition about printing only public campaigns, so later
-        //TODO Maybe I can unite this 2 endpoints?
+        return "me";
     }
-
 }
