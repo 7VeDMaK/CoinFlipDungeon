@@ -37,7 +37,7 @@
             return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
         }
 
-        public String getJwtTokenFromRequest(HttpServletRequest request){
+        public String  getJwtTokenFromRequest(HttpServletRequest request){
             Cookie[] cookies = request.getCookies();
             if (cookies != null) {
                 for (Cookie cookie : cookies) {
@@ -48,8 +48,6 @@
             }
             return null;
         }
-        // TODO ДОДЕЛАТЬ ФУНКЦИЮ ЗАБОРА КУКИ, ТАКЖЕ ПЕРЕМЕСТИТЬ ЕЁ В СЕРВИС КУДА-ТО, ХЗ. КУКИ НУЖНЫ ЧТОБЫ ДОСТАВАТЬ
-        // TODO ТОКЕН, НО ВОЗМОЖНО МОЯ ИДЕЯ ТУПАЯ И НУЖНО ПЕРЕСМОТРЕТЬ КАК ПОЛУЧАТЬ ИНФО О ЮЗЕРЕ
 
         public boolean validateJwtToken(String authToken) {
             try {

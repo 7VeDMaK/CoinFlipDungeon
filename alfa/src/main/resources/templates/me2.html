@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About me</title>
+</head>
+<body>
+<h1>Username: <span th:text="${username}"></span></h1>
+<h1>User email: <span th:text="${user_email}"></span></h1>
+<!--<h1>User campaigns: <span th:text="${user_campaigns != null}"></span></h1>-->
+<div th:if="${not #sets.isEmpty(userCampaigns)}">
+    <p>User Campaigns:</p>
+    <!--    <ul>-->
+    <!--        <li th:each="campaign : ${user_campaigns.entrySet()}">-->
+    <!--            <span th:text="${campaign.key}">Key</span>:-->
+    <!--            <span th:text="${campaign.value}">Value</span>-->
+    <!--        </li>-->
+    <!--    </ul>-->
+</div>
+<div th:if="${#sets.isEmpty(userCampaigns)}">
+    <h1>No user campaigns found.</h1>
+</div>
+</body>
+</html>

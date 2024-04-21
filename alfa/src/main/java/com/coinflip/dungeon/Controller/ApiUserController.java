@@ -46,8 +46,6 @@ public class ApiUserController {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new EntityNotFoundException("User not found"));
         String message = String.format("Username: %s\nCampaigns: %s", username, user.getCampaigns());
         return ResponseEntity.ok(message);
-        //TODO Should create condition about printing only public campaigns, so later
-        //TODO Maybe I can unite this 2 endpoints?
     }
 
 }

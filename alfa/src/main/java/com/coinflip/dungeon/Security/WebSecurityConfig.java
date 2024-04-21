@@ -30,6 +30,7 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
@@ -59,28 +60,33 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
 //                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-//                .authorizeHttpRequests(auth ->
-//                        auth.requestMatchers("/api/auth/**").permitAll()
-//                                .requestMatchers("/auth/**").permitAll()
-//                                .requestMatchers("/api/test/**").permitAll()
-//                                .anyRequest().authenticated());
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .logout()
+//                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> httpServletResponse.setStatus(HttpServletResponse.SC_OK))
+                .deleteCookies("JWT_TOKEN")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true);
+
+                http.authorizeHttpRequests(auth ->
+                        auth.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/login").permitAll()
+                                .requestMatchers("/register").permitAll()
+                                .requestMatchers("/static/**").permitAll()
+                                .anyRequest().authenticated());
+//                .formLogin().loginPage("/login"); // Страница входа
 
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        // Добавляем конфигурацию для работы с куками
 //        http.addFilterBefore(new RequestHeaderAuthenticationFilter(), BasicAuthenticationFilter.class)
 //                .logout()
-//                .logoutUrl("/api/auth/logout")
+//                .logoutUrl("/auth/logout")
+//                .logoutSuccessUrl("/auth/signin")
 //                .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> httpServletResponse.setStatus(HttpServletResponse.SC_OK))
 //                .deleteCookies("JWT_TOKEN")
 //                .invalidateHttpSession(true)
-//                .clearAuthentication(true)
-//                .and()
-//                .rememberMe()
-//                .rememberMeParameter("remember-me")
-//                .key("uniqueAndSecret");
+//                .clearAuthentication(true);
 
         return http.build();
     }

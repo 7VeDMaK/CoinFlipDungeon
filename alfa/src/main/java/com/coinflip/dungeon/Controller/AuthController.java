@@ -12,6 +12,7 @@ import com.coinflip.dungeon.Payload.Request.SignupRequest;
 import com.coinflip.dungeon.Security.JWT.JwtUtils;
 import com.coinflip.dungeon.Security.Services.RefreshTokenService;
 import com.coinflip.dungeon.Security.Services.UserDetailsImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +32,7 @@ import java.util.Set;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
-@RequestMapping("/auth")
+@RequestMapping("/")
 public class AuthController {
     @Autowired
     AuthenticationManager authenticationManager;
@@ -52,12 +54,13 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @GetMapping("/signup")
+    @GetMapping("/register")
     public String getRegisterPage(Model model) {
         model.addAttribute("signUpRequest", new SignupRequest());
         return "register";
     }
-    @PostMapping("/signup")
+
+    @PostMapping("/register")
     public String signupUser(@ModelAttribute SignupRequest signUpRequest, Model model) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             model.addAttribute("message", "Username is already taken!");
@@ -109,18 +112,21 @@ public class AuthController {
         userRepository.save(user);
 
         model.addAttribute("message", "User registered successfully!");
-        return "redirect:/auth/signin";
+        return "redirect:/login";
     }
 
 
-    @GetMapping("/signin")
-    public String getLoginPage(Model model) {
+    @GetMapping("/login")
+    public String getLoginPage(@RequestParam(name = "logout", required = false) String logout, Model model) {
+        if (logout != null) {
+            model.addAttribute("logoutMessage", "You have been logged out successfully.");
+        }
         model.addAttribute("loginRequest", new LoginRequest());
         return "login";
     }
 
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public String authenticateUser(@ModelAttribute LoginRequest loginRequest, HttpServletResponse response, Model model) {
 
         Authentication authentication = authenticationManager
@@ -132,28 +138,10 @@ public class AuthController {
 
         String jwt = jwtUtils.generateJwtToken(userDetails);
 
-        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-        refreshTokenService.deleteByUserId(userDetails.getId());
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
-        jwtUtils.addJwtTokenToCookie(response, jwt); // Добавляем токен в куки
+        jwtUtils.addJwtTokenToCookie(response, jwt);
         model.addAttribute("userLogin", loginRequest);
+
         return "redirect:/user/me";
     }
 
-
-
-//    @PostMapping("/refreshtoken")
-//    public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
-//        String requestRefreshToken = request.getRefreshToken();
-//
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration)
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-//                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-//                        "Refresh token is not in database!"));
-//    }
 }
